@@ -98,14 +98,14 @@ class EuchreCard:
         if score == 11:
             score += 15
 
-        if suit == SUITS.SPADE and self.getSuit() == SUITS.CLUB:
-            score += 10
-        elif suit == SUITS.HEART and self.getSuit() == SUITS.DIAMOND:
-            score += 10
-        elif suit == SUITS.DIAMOND and self.getSuit() == SUITS.HEART:
-            score += 10
-        elif suit == SUITS.CLUB and self.getSuit() == SUITS.SPADE:
-            score += 10
+#        if suit == SUITS.SPADE and self.getSuit() == SUITS.CLUB:
+#            score += 10
+#        elif suit == SUITS.HEART and self.getSuit() == SUITS.DIAMOND:
+#            score += 10
+#        elif suit == SUITS.DIAMOND and self.getSuit() == SUITS.HEART:
+#            score += 10
+#        elif suit == SUITS.CLUB and self.getSuit() == SUITS.SPADE:
+#            score += 10
 
 
         return score
