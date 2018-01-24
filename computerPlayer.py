@@ -74,7 +74,7 @@ class DQNAgent:
 		playHistory = Input(shape=(handSize,numPlayers,len(cards)),name='playHistory')
 
 		nextLayer = Concatenate(Flatten()(initialHand),
-					Flatten()(actionCounter),
+					(actionCounter),
 					Flatten()(upcard),
 					Flatten()(bidHistory),
 					Flatten()(currentHand),
