@@ -170,7 +170,7 @@ class ComputerPlayer(Player) :
 		self.gameState = {}
 		self.gameState['initialHand'] = np.zeros((handSize,len(cards)))
 		# Sort initial hand and fill in the initialHand matrix
-		self.gameState['actionCounter'] = np.zeros((numPlayers-1,))
+		self.gameState['actionCounter'] = np.zeros((numPlayers-1,), dtype=np.int)
 		self.gameState['upcard'] = np.zeros((len(cards),))
 		self.gameState['upcard'][cardIndex[upcard]] = 1
 		self.gameState['bidHistory'] = np.zeros((numPlayers,len(bids),2*numPlayers))
@@ -182,7 +182,7 @@ class ComputerPlayer(Player) :
 
 	def incrementActionCounter(self) :
 		if sum(self.gameState['actionCounter']) == 3 :
-			self.gameState['actionCounter'] = np.zeros((numPlayers-1,))
+			self.gameState['actionCounter'] = np.zeros((numPlayers-1,), dtype=np.int)
 		else :
 			self.gameState['actionCounter'][sum(self.gameState['actionCounter'])] = 1
 
