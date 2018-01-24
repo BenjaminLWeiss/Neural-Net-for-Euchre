@@ -14,15 +14,15 @@ from keras.layers import Dense, Input, Concatenate, Flatten
 from keras.optimizers import Adam
 
 # Define some game-related constants
-cards = [Card(suit, rank) for suit in [SUITS.CLUBS, SUITS.DIAMONDS, SUITS.HEARTS, SUITS.SPADES, SUITS.TRUMP]
+cards = [Card(suit, rank) for suit in [SUITS.CLUB, SUITS.DIAMOND, SUITS.HEART, SUITS.SPADE, SUITS.TRUMP]
 	 for rank in range(2,16)]
 for i in range(len(cards)) :
 	cardIndex[cards[i]] = i
 
-bids = [Bid(SUITS.CLUBS, True), Bid(SUITS.CLUBS, False),
-	Bid(SUITS.DIAMONDS, True), Bid(SUITS.DIAMONDS, False),
-	Bid(SUITS.HEARTS, True), Bid(SUITS.HEARTS, False),
-	Bid(SUITS.SPADES, True), Bid(SUITS.SPADES, False),
+bids = [Bid(SUITS.CLUB, True), Bid(SUITS.CLUB, False),
+	Bid(SUITS.DIAMOND, True), Bid(SUITS.DIAMOND, False),
+	Bid(SUITS.HEART, True), Bid(SUITS.HEART, False),
+	Bid(SUITS.SPADE, True), Bid(SUITS.SPADE, False),
 	Bid(None,None)]
 for i in range(len(bids)) :
 	bidIndex[bids[i]] = i
