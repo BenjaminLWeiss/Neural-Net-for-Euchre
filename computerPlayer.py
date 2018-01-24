@@ -19,6 +19,7 @@ cards = [Card(suit, rank) for suit in [SUITS.CLUB, SUITS.DIAMOND, SUITS.HEART, S
 cardIndex = {}
 for i in range(len(cards)) :
 	cardIndex[cards[i]] = i
+cardIndex[None] = None
 
 bids = [Call([SUITS.CLUB, True]), Call([SUITS.CLUB, False]),
 	Call([SUITS.DIAMOND, True]), Call([SUITS.DIAMOND, False]),
