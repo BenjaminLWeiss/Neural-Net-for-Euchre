@@ -85,7 +85,7 @@ class DQNAgent:
 		nextLayer = Dense(50,activation='relu')(nextLayer)
 		output = Dense(self.action_size,activation='linear')(nextLayer)
 
-		model = Model(inputs = [initialHand,actionCounter,bidHistory,currentHand,playHistory],
+		model = Model(inputs = [initialHand,actionCounter,upcard,bidHistory,currentHand,playHistory],
 			      outputs = output)
 		model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))        
 		
