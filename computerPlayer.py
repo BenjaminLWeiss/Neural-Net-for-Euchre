@@ -15,7 +15,7 @@ from keras.optimizers import Adam
 
 # Define some game-related constants
 cards = [Card(suit, rank) for suit in [SUITS.CLUB, SUITS.DIAMOND, SUITS.HEART, SUITS.SPADE, SUITS.TRUMP]
-	 for rank in range(2,16)]
+	 for rank in range(9,16)]
 cardIndex = {}
 for i in range(len(cards)) :
 	cardIndex[cards[i]] = i

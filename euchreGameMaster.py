@@ -26,7 +26,7 @@ class EuchreCard:
     # for trump and 9 through 14 skipping 11 for non-trump same color)
 
     def __init__(self, suit, rank):
-        if suit not in (SUITS.HEART, SUITS.SPADE, SUITS.DIAMOND, SUITS.CLUB):
+        if suit not in (SUITS.HEART, SUITS.SPADE, SUITS.DIAMOND, SUITS.CLUB, SUITS.TRUMP):
             print "Suit choice not valid"
         self.suit = suit
         if rank not in (RANK.NINE, RANK.TEN, RANK.JACK, RANK.QUEEN, RANK.KING, RANK.ACE):
