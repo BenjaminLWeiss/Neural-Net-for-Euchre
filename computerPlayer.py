@@ -154,7 +154,7 @@ class ComputerPlayer(Player) :
 
 	def swapUpCard(self) :
 		rankings = self.doSomething()
-		self.lastAction = [r for r in rankings.getSwaps() if self.hand.contains(cards[r])][0]
+		self.lastAction = [r for r in rankings.getSwaps() if cards[r] in self.hand][0]
 		self.hand.remove(cards[self.lastAction])
 		self.hand += self.upcard
 		# Now we have to resort the hand again since it has changed.
