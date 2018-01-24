@@ -20,11 +20,11 @@ cardIndex = {}
 for i in range(len(cards)) :
 	cardIndex[cards[i]] = i
 
-bids = [Call(SUITS.CLUB, True), Call(SUITS.CLUB, False),
-	Call(SUITS.DIAMOND, True), Call(SUITS.DIAMOND, False),
-	Call(SUITS.HEART, True), Call(SUITS.HEART, False),
-	Call(SUITS.SPADE, True), Call(SUITS.SPADE, False),
-	Call(None,None)]
+bids = [Call([SUITS.CLUB, True]), Call([SUITS.CLUB, False]),
+	Call([SUITS.DIAMOND, True]), Call([SUITS.DIAMOND, False]),
+	Call([SUITS.HEART, True]), Call([SUITS.HEART, False]),
+	Call([SUITS.SPADE, True]), Call([SUITS.SPADE, False]),
+	Call([None,None])]
 for i in range(len(bids)) :
 	bidIndex[bids[i]] = i
 
