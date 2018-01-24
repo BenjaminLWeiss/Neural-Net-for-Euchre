@@ -187,7 +187,7 @@ class ComputerPlayer(Player) :
 			self.gameState['actionCounter'][sum(self.gameState['actionCounter'])] = 1
 
 	def announceBidMade(self,bid, player) :
-		self.gameState['bidHistory'][self.positionToIndex(player),bidIndex(bid),self.currentBidRound] = 1
+		self.gameState['bidHistory'][self.positionToIndex(player),bidIndex[bid],self.currentBidRound] = 1
 		self.incrementActionCounter()
 		self.currentBidRound += 1
 
