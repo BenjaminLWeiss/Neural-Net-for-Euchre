@@ -161,12 +161,13 @@ class ComputerPlayer(Player) :
 		announceTrumpSuit(self.upcard.suit)
 		
 	def announceGameStart(self,hand,upcard,dealer,position) :
-		super(Player,self).announceGameStart(hand,upcard,dealer,position)
+		super(ComputerPlayer,self).announceGameStart(hand,upcard,dealer,position)
 		self.position = position
 		self.hand = hand
 		self.upcard = upcard
 		self.dealer = dealer
-		
+
+		self.gameState = {}
 		self.gameState['initialHand'] = np.zeros((handSize,len(cards)))
 		# Sort initial hand and fill in the initialHand matrix
 		self.gameState['actionCounter'] = np.zeros((numPlayers-1,))
@@ -202,7 +203,7 @@ class ComputerPlayer(Player) :
 			self.brain.replay(batchSize)
 
 	def announceTrumpSuit(self,suit) :
-		super(Player,self).announceTrumpSuit(suit)
+		super(ComputerPlayer,self).announceTrumpSuit(suit)
 		# Resort hand by new trump values and fill in the currentHand matrix (don't assume that it's already 0's)
 		self.trump = suit
 

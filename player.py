@@ -4,7 +4,7 @@ from euchreGameMaster import RANK
 from euchreGameMaster import BIDS
 from euchreGameMaster import Call
 
-class Player :
+class Player(object) :
     def isValidPlay(self,card,suitLed) :
         if suitLed is None :
             return True
