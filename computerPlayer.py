@@ -73,12 +73,12 @@ class DQNAgent:
 		currentHand = Input(shape=(handSize,len(cards)),name='currentHand')
 		playHistory = Input(shape=(handSize,numPlayers,len(cards)),name='playHistory')
 
-		nextLayer = Concatenate(Flatten()(initialHand),
+		nextLayer = Concatenate([Flatten()(initialHand),
 					(actionCounter),
-					Flatten()(upcard),
+					(upcard),
 					Flatten()(bidHistory),
 					Flatten()(currentHand),
-					Flatten()(playHistory))
+					Flatten()(playHistory)])
 
 		nextLayer = Dense(200,activation='relu')(nextLayer)
 		nextLayer = Dense(400,activation='relu')(nextLayer)
