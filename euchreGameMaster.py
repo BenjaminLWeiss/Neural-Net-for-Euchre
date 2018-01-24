@@ -17,6 +17,7 @@ SUITS = enum(HEART = 'heart', SPADE = 'spade', DIAMOND = 'diamond', CLUB = 'club
 
 POSITIONS = enum(WEST = 0, NORTH = 1, EAST = 2, SOUTH = 3)
 RANK = enum(NINE = 9, TEN = 10, JACK = 11, QUEEN = 12, KING = 13, ACE = 14, LEFT = 15, RIGHT = 16)
+BIDS = enum(passbid = [None, None], hearts = [SUITS.HEART, False], heartsALONE = [SUITS.HEART, True], spades = [SUITS.SPADE, False], spadesALONE = [SUITS.SPADE, True], clubs = [SUITS.CLUB, False], clubsALONE = [SUITS.CLUB, True], diamonds = [SUITS.DIAMOND, False], diamondsALONE = [SUITS.DIAMOND, True])
 
 
 class EuchreCard:

@@ -1,7 +1,7 @@
 from euchreGameMaster import SUITS
 from euchreGameMaster import POSITIONS
 from euchreGameMaster import RANK
-from humanPlayer import BIDS
+from euchreGameMaster import BIDS
 
 class Player :
     def isValidPlay(self,card,suitLed) :

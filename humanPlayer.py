@@ -5,18 +5,13 @@ from euchreGameMaster import POSITIONS
 from euchreGameMaster import RANK
 from euchreGameMaster import EuchreCard
 from euchreGameMaster import Call
+from euchreGameMaster import BIDS
 from euchreGameMaster import GameMaster 
 from player import Player
 from pick import Picker
 
 #def go_back(picker):
 #    return (None, -1)
-
-
-def enum(**named_values):
-    return type('Enum', (), named_values)
-
-BIDS = enum(passbid = [None, None], hearts = [SUITS.HEART, False], heartsALONE = [SUITS.HEART, True], spades = [SUITS.SPADE, False], spadesALONE = [SUITS.SPADE, True], clubs = [SUITS.CLUB, False], clubsALONE = [SUITS.CLUB, True], diamonds = [SUITS.DIAMOND, False], diamondsALONE = [SUITS.DIAMOND, True])
 
 
 class Human(Player):
