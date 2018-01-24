@@ -25,6 +25,7 @@ bids = [Call([SUITS.CLUB, True]), Call([SUITS.CLUB, False]),
 	Call([SUITS.HEART, True]), Call([SUITS.HEART, False]),
 	Call([SUITS.SPADE, True]), Call([SUITS.SPADE, False]),
 	Call([None,None])]
+bidIndex = {}
 for i in range(len(bids)) :
 	bidIndex[bids[i]] = i
 
