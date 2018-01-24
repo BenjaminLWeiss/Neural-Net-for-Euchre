@@ -42,13 +42,13 @@ class PlayRanking :
 		self.cardScores = cardScores
 		self.swapScores = swapScores
 		
-	def getBids() :
+	def getBids(self) :
 		return [b for _,b in sorted(zip(self.bidScores,range(len(bids))))]
 	
-	def getCards() :
+	def getCards(self) :
 		return [c for _,c in sorted(zip(self.cardScores,range(len(cards))))]
 
-	def getSwaps() :
+	def getSwaps(self) :
 		return [c for _,c in sorted(zip(self.swapScores,range(len(cards))))]
 
 # Class to handle construction and training of the neural net
@@ -96,7 +96,7 @@ class DQNAgent:
 
 	def act(self, state):
 		if np.random.rand() <= self.epsilon :
-			response = np.randn((self.action_size,))
+			response = np.random.randn(self.action_size,)
 		else :
 			response = self.model.predict(state)
 		return PlayRanking(response[:len(bids)],response[len(bids):len(bids)+len(cards)],
@@ -141,7 +141,7 @@ class ComputerPlayer(Player) :
 
 	def makeBid(self,currentRound,upCard,dealer) :
 		rankings = self.doSomething()
-		self.lastAction = [r for r in rankings.getBids() if self.isValidBid(bids[r],self.currentBidRound)][0]
+		self.lastAction = [r for r in rankings.getBids() if self.isValidBid(bids[r],upCard,self.currentBidRound)][0]
 		return bids[self.lastAction]
 
 	def playCard(self, suitLed) :
