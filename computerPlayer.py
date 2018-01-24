@@ -3,7 +3,7 @@ import numpy as np
 from euchreGameMaster import SUITS
 from euchreGameMaster import POSITIONS
 from euchreGameMaster import RANK
-from euchreGameMaster import EuchreCard
+from euchreGameMaster import EuchreCard as Card
 from euchreGameMaster import Call
 from euchreGameMaster import BIDS
 from euchreGameMaster import GameMaster 
@@ -16,6 +16,7 @@ from keras.optimizers import Adam
 # Define some game-related constants
 cards = [Card(suit, rank) for suit in [SUITS.CLUB, SUITS.DIAMOND, SUITS.HEART, SUITS.SPADE, SUITS.TRUMP]
 	 for rank in range(2,16)]
+cardIndex = {}
 for i in range(len(cards)) :
 	cardIndex[cards[i]] = i
 
