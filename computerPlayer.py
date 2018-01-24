@@ -15,7 +15,7 @@ from keras.optimizers import Adam
 
 # Define some game-related constants
 cards = [Card(suit, rank) for suit in [SUITS.CLUB, SUITS.DIAMOND, SUITS.HEART, SUITS.SPADE, SUITS.TRUMP]
-	 for rank in range(9,16)]
+	 for rank in range(9,17)]
 cardIndex = {}
 for i in range(len(cards)) :
 	cardIndex[cards[i]] = i
@@ -172,7 +172,7 @@ class ComputerPlayer(Player) :
 		# Sort initial hand and fill in the initialHand matrix
 		self.gameState['actionCounter'] = np.zeros((numPlayers-1,))
 		self.gameState['upcard'] = np.zeros((len(cards),))
-		self.gameState['upcard'][cardIndex(upcard)] = 1
+		self.gameState['upcard'][cardIndex[upcard]] = 1
 		self.gameState['bidHistory'] = np.zeros((numPlayers,len(bids),2*numPlayers))
 		self.gameState['currentHand'] = np.zeros((handSize,len(cards)))
 		self.gameState['playHistory'] = np.zeros((handSize,numPlayers,len(cards)))

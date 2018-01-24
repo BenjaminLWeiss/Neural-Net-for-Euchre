@@ -33,7 +33,7 @@ class EuchreCard:
             print('Rank choice Not Valid')
         self.rank = rank
 
-    def __repr__(self):
+    def __str__(self):
 
         text_rank = None
         if self.rank == RANK.NINE:
@@ -333,6 +333,8 @@ class GameMaster:
         EastHand = Deck[10:15]
         SouthHand = Deck[15:20]
         UpCard = Deck[20]
+
+        print UpCard
 
         ## Tells players their hands and upcard
         self.West.announceGameStart(WestHand, UpCard, Dealer_Position, 0)
