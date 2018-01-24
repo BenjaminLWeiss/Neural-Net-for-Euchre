@@ -1,7 +1,12 @@
 #from __future__ import print_function
 import curses
-import euchreGameMaster
-import player
+from euchreGameMaster import SUITS
+from euchreGameMaster import POSITIONS
+from euchreGameMaster import RANK
+from euchreGameMaster import EuchreCard
+from euchreGameMaster import Call
+from euchreGameMaster import GameMaster 
+from player import Player
 from pick import Picker
 
 #def go_back(picker):
