@@ -1,5 +1,7 @@
 #from __future__ import print_function
 import curses
+import euchreGameMaster
+import player
 from pick import Picker
 
 #def go_back(picker):
