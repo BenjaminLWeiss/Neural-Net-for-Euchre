@@ -131,7 +131,7 @@ class ComputerPlayer(Player) :
 		self.lastState = self.gameState
 		return self.brain.act(self.gameState)
 
-	def makeBid(self) :
+	def makeBid(self,currentRound,upCard,dealer) :
 		rankings = self.doSomething()
 		self.lastAction = [r for r in rankings.getBids() if self.isValidBid(bids[r],self.currentBidRound)][0]
 		return bids[self.lastAction]
