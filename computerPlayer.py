@@ -1,5 +1,7 @@
 import random
 import numpy as np
+import euchreGameMaster
+import player
 from collections import deque
 from keras.models import Model
 from keras.layers import Dense, Input, Concatenate, Flatten
