@@ -156,7 +156,7 @@ class ComputerPlayer(Player) :
 		rankings = self.doSomething()
 		self.lastAction = [r for r in rankings.getSwaps() if cards[r] in self.hand][0]
 		self.hand.remove(cards[self.lastAction])
-		self.hand += self.upcard
+		self.hand.append(self.upcard)
 		# Now we have to resort the hand again since it has changed.
 		announceTrumpSuit(self.upcard.suit)
 		
