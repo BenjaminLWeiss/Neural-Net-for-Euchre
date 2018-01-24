@@ -146,7 +146,7 @@ class ComputerPlayer(Player) :
 
 	def playCard(self, suitLed, trick=None) :
 		rankings = self.doSomething()
-		self.lastAction = [r for r in rankings.getCards() if self.isValidPlay(cards[r], suitLed)][0]
+		self.lastAction = [r for r in rankings.getCards() if self.isValidPlay(cards[r], suitLed) and cards[r] in self.hand][0]
 		# Don't forget to remove the card from our hand
 		self.gameState['currentHand'][:,self.lastAction] = 0
 		self.hand.remove(cards[self.lastAction])
