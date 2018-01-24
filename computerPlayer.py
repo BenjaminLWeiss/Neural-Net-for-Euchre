@@ -1,7 +1,13 @@
 import random
 import numpy as np
-import euchreGameMaster
-import player
+from euchreGameMaster import SUITS
+from euchreGameMaster import POSITIONS
+from euchreGameMaster import RANK
+from euchreGameMaster import EuchreCard
+from euchreGameMaster import Call
+from euchreGameMaster import BIDS
+from euchreGameMaster import GameMaster 
+from player import Player
 from collections import deque
 from keras.models import Model
 from keras.layers import Dense, Input, Concatenate, Flatten
