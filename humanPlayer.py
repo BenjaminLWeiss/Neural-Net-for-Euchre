@@ -14,7 +14,7 @@ from pick import Picker
 #    return (None, -1)
 
 
-class Human(Player):
+class HumanPlayer(Player):
 
     def makeBid(self, auctionRound, upcard, dealer_position):
         
@@ -22,7 +22,7 @@ class Human(Player):
 #        self.informUpCard(auctionRound)
         if auctionRound == 0:
             self.sortForBiddingRoundOne(self.upcard.getSuit())
-            title = 'The upcard is %r. \n Your hand is %r. \n Would you like to Bid, or Pass?' % (self.upcard, self.hand)
+            title = 'The upcard is %s. \n Your hand is %s. \n Would you like to Bid, or Pass?' % (self.upcard, self.hand)
         else:
             self.sortForBiddingRoundTwo(self.upcard.getSuit())
             title = 'The upcard was %r. \n Your hand is %r. \n Would you like to Bid, or Pass?' % (self.upcard, self.hand)
@@ -38,14 +38,14 @@ class Human(Player):
                 return trialBid
             else:
                 print 'That is not a legal choice. The only bid you may make is the suit of the up card.'
-                return self.makeBid(auctionRound)
+                return self.makeBid(auctionRound, upcard, dealer_position)
             
         elif option == 'Pass':
             if self.isValidBid(Call(BIDS.passbid), self.upcard, auctionRound):
                 return Call(BIDS.passbid)
             else:
                 print "You may not passout the hand"
-                return self.makeBid(auctionRound)
+                return self.makeBid(auctionRound, upcard, dealer_position)
 
 
     def informUpCard(self,  auctionRound):
