@@ -37,7 +37,9 @@ class EuchreCard:
         return hasattr(other,'rank') and self.rank == other.rank and hasattr(other,'suit') and self.suit == other.suit
 
     def __hash__(self) :
-        return self.suit.hash() ^ self.rank.hash()
+
+        return hash(self.suit) ^ hash(self.rank)
+
 
     def __str__(self):
 
