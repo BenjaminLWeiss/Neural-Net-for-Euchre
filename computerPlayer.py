@@ -144,7 +144,7 @@ class ComputerPlayer(Player) :
 		self.lastAction = [r for r in rankings.getBids() if self.isValidBid(bids[r],upCard,self.currentBidRound)][0]
 		return bids[self.lastAction]
 
-	def playCard(self, suitLed) :
+	def playCard(self, suitLed, trick=None) :
 		rankings = self.doSomething()
 		self.lastAction = [r for r in rankings.getCards() if self.isValidPlay(bids[r])][0]
 		# Don't forget to remove the card from our hand
