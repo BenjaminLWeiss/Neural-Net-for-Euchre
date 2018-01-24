@@ -33,7 +33,7 @@ class Player :
             card.declareTrump(suit)
  
     #Subclasses can override these to actually do something intelligent
-    def makeBid(self, auctionRound, upCard, dealer) :
+    def makeBid(self, auctionRound) :
         return Call(BIDS.passbid)
  
     def playCard(self, suitLed, trick=None) :
