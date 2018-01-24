@@ -2,6 +2,7 @@ from euchreGameMaster import SUITS
 from euchreGameMaster import POSITIONS
 from euchreGameMaster import RANK
 from euchreGameMaster import BIDS
+from euchreGameMaster import Call
 
 class Player :
     def isValidPlay(self,card,suitLed) :
