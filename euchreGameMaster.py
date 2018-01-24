@@ -146,8 +146,14 @@ class Call: #This class is for calls made during the auction
         if alone is not None and alone not in (False, True):
             print('Alone Call not True/False')
         self.alone = alone
+        
+    def __eq__(self,other) :
+        return hasattr(other,'suit') and self.suit == other.suit and hasattr(other,'alone') and self.alone == other.alone
 
-    def __repr__(self):
+    def __hash__(self) :
+        return hash(self.suit) ^ hash(self.alone)
+
+    def __str__(self):
         
         bid = None
         alone = None
