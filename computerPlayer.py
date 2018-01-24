@@ -129,7 +129,7 @@ class ComputerPlayer(Player) :
 		self.currentTrick = 0
 		if brain is None :
 			# The first group are bids, the next group is cards, the last group is cards to swap
-			self.brain = DQNAgent(self.stateSize,len(bids)+2*len(cards))
+			self.brain = DQNAgent(len(bids)+2*len(cards))
 		else :
 			self.brain = brain
 
