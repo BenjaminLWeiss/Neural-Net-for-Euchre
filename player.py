@@ -7,11 +7,11 @@ from euchreGameMaster import Call
 class Player(object) :
     def isValidPlay(self,card,suitLed) :
         if suitLed is None :
-            return True
+            return card in self.hand
  
         cardsInSuit = [c for c in self.hand if c.suit == suitLed];
         if len(cardsInSuit) == 0 :
-            return True
+            return card in self.hand
          
         return card in cardsInSuit
  
