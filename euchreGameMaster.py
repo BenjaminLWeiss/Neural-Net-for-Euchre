@@ -354,7 +354,7 @@ class GameMaster:
                 auctionRound = 0
             else: auctionRound = 1
 
-            Bid = self.Play_Order[Player_Turn].makeBid(auctionRound)
+            Bid = self.Play_Order[Player_Turn].makeBid(auctionRound, UpCard, Dealer_Position)
             if Bid.getSuit() is None:
 
                 if Number_of_Passes == 7: # Forces Dealer to Bid Spades or Hearts

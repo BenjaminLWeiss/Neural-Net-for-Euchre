@@ -21,7 +21,7 @@ BIDS = enum(passbid = [None, None], hearts = [SUITS.HEART, False], heartsALONE =
 
 class Human(Player):
 
-    def makeBid(self, auctionRound):
+    def makeBid(self, auctionRound, upcard, dealer_position):
         
         raw_input("Press Enter to continue...")
 #        self.informUpCard(auctionRound)
