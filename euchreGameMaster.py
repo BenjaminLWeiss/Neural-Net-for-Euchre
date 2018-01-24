@@ -346,8 +346,6 @@ class GameMaster:
         SouthHand = Deck[15:20]
         UpCard = Deck[20]
 
-        print UpCard
-
         ## Tells players their hands and upcard
         self.West.announceGameStart(WestHand, UpCard, Dealer_Position, 0)
         self.North.announceGameStart(NorthHand, UpCard, Dealer_Position, 1)
@@ -407,5 +405,7 @@ class GameMaster:
                     '''for c in Deck:
                         c.declareTrump(Bid.getSuit())
                     Bid_made = True'''
+
+        print Bid
                     # The players should be running the above for loop on their own
         return Bid, Declarer
