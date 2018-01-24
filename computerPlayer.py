@@ -192,7 +192,7 @@ class ComputerPlayer(Player) :
 		self.currentBidRound += 1
 
 	def announceCardPlayed(self,card, player) :
-		self.gameState['playHistory'][self.currentTrick/4,self.positionToIndex(player),cardIndex(card)] = 1
+		self.gameState['playHistory'][self.currentTrick/4,self.positionToIndex(player),cardIndex[card]] = 1
 		self.incrementActionCounter()
 		self.currentTrick += 1
 
