@@ -158,7 +158,7 @@ class ComputerPlayer(Player) :
 		self.hand.remove(cards[self.lastAction])
 		self.hand.append(self.upcard)
 		# Now we have to resort the hand again since it has changed.
-		announceTrumpSuit(self.upcard.suit)
+		self.announceTrumpSuit(self.upcard.suit)
 		
 	def announceGameStart(self,hand,upcard,dealer,position) :
 		super(ComputerPlayer,self).announceGameStart(hand,upcard,dealer,position)
