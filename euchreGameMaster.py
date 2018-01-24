@@ -33,6 +33,12 @@ class EuchreCard:
             print('Rank choice Not Valid')
         self.rank = rank
 
+	def __eq__(self,other) :
+		return hasattr(other,'rank') && self.rank == other.rank && hasattr(other,'suit') && self.suit == other.suit
+
+	def __hash__(self) :
+		return self.suit.hash() ^ self.rank.hash()
+
     def __str__(self):
 
         text_rank = None
