@@ -19,6 +19,7 @@ cards = [Card(suit, rank) for suit in [SUITS.CLUB, SUITS.DIAMOND, SUITS.HEART, S
 cardIndex = {}
 for i in range(len(cards)) :
 	cardIndex[cards[i]] = i
+cardIndex[None] = None
 
 bids = [Call([SUITS.CLUB, True]), Call([SUITS.CLUB, False]),
 	Call([SUITS.DIAMOND, True]), Call([SUITS.DIAMOND, False]),
@@ -144,9 +145,9 @@ class ComputerPlayer(Player) :
 		self.lastAction = [r for r in rankings.getBids() if self.isValidBid(bids[r],upCard,self.currentBidRound)][0]
 		return bids[self.lastAction]
 
-	def playCard(self, suitLed) :
+	def playCard(self, suitLed, trick=None) :
 		rankings = self.doSomething()
-		self.lastAction = [r for r in rankings.getCards() if self.isValidPlay(bids[r])][0]
+		self.lastAction = [r for r in rankings.getCards() if self.isValidPlay(cards[r], suitLed)][0]
 		# Don't forget to remove the card from our hand
 		self.gameState['currentHand'][:,self.lastAction] = 0
 		self.hand.remove(cards[self.lastAction])
@@ -154,11 +155,11 @@ class ComputerPlayer(Player) :
 
 	def swapUpCard(self) :
 		rankings = self.doSomething()
-		self.lastAction = [r for r in rankings.getSwaps() if self.hand.contains(cards[r])][0]
+		self.lastAction = [r for r in rankings.getSwaps() if cards[r] in self.hand][0]
 		self.hand.remove(cards[self.lastAction])
-		self.hand += self.upcard
+		self.hand.append(self.upcard)
 		# Now we have to resort the hand again since it has changed.
-		announceTrumpSuit(self.upcard.suit)
+		self.announceTrumpSuit(self.upcard.suit)
 		
 	def announceGameStart(self,hand,upcard,dealer,position) :
 		super(ComputerPlayer,self).announceGameStart(hand,upcard,dealer,position)
@@ -170,7 +171,7 @@ class ComputerPlayer(Player) :
 		self.gameState = {}
 		self.gameState['initialHand'] = np.zeros((handSize,len(cards)))
 		# Sort initial hand and fill in the initialHand matrix
-		self.gameState['actionCounter'] = np.zeros((numPlayers-1,))
+		self.gameState['actionCounter'] = np.zeros((numPlayers-1,), dtype=np.int)
 		self.gameState['upcard'] = np.zeros((len(cards),))
 		self.gameState['upcard'][cardIndex[upcard]] = 1
 		self.gameState['bidHistory'] = np.zeros((numPlayers,len(bids),2*numPlayers))
@@ -182,17 +183,17 @@ class ComputerPlayer(Player) :
 
 	def incrementActionCounter(self) :
 		if sum(self.gameState['actionCounter']) == 3 :
-			self.gameState['actionCounter'] = np.zeros((numPlayers-1,))
+			self.gameState['actionCounter'] = np.zeros((numPlayers-1,), dtype=np.int)
 		else :
 			self.gameState['actionCounter'][sum(self.gameState['actionCounter'])] = 1
 
 	def announceBidMade(self,bid, player) :
-		self.gameState['bidHistory'][self.positionToIndex(player),bidIndex(bid),self.currentBidRound] = 1
+		self.gameState['bidHistory'][self.positionToIndex(player),bidIndex[bid],self.currentBidRound] = 1
 		self.incrementActionCounter()
 		self.currentBidRound += 1
 
 	def announceCardPlayed(self,card, player) :
-		self.gameState['playHistory'][self.currentTrick/4,self.positionToIndex(player),cardIndex(card)] = 1
+		self.gameState['playHistory'][self.currentTrick/4,self.positionToIndex(player),cardIndex[card]] = 1
 		self.incrementActionCounter()
 		self.currentTrick += 1
 

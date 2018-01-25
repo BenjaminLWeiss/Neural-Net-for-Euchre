@@ -148,8 +148,14 @@ class Call: #This class is for calls made during the auction
         if alone is not None and alone not in (False, True):
             print('Alone Call not True/False')
         self.alone = alone
+        
+    def __eq__(self,other) :
+        return hasattr(other,'suit') and self.suit == other.suit and hasattr(other,'alone') and self.alone == other.alone
 
-    def __repr__(self):
+    def __hash__(self) :
+        return hash(self.suit) ^ hash(self.alone)
+
+    def __str__(self):
         
         bid = None
         alone = None
@@ -342,8 +348,6 @@ class GameMaster:
         SouthHand = Deck[15:20]
         UpCard = Deck[20]
 
-        print UpCard
-
         ## Tells players their hands and upcard
         self.West.announceGameStart(WestHand, UpCard, Dealer_Position, 0)
         self.North.announceGameStart(NorthHand, UpCard, Dealer_Position, 1)
@@ -403,5 +407,7 @@ class GameMaster:
                     '''for c in Deck:
                         c.declareTrump(Bid.getSuit())
                     Bid_made = True'''
+
+        print Bid
                     # The players should be running the above for loop on their own
         return Bid, Declarer
