@@ -126,6 +126,7 @@ class DQNAgent:
 # into the bid and card lists (defined at the top of the file)
 class ComputerPlayer(Player) :
 	def __init__(self, brain=None) :
+		super(ComputerPlayer, self).__init__()
 		self.currentBidRound = 0
 		self.currentTrick = 0
 		if brain is None :
@@ -133,6 +134,7 @@ class ComputerPlayer(Player) :
 			self.brain = DQNAgent(len(bids)+2*len(cards))
 		else :
 			self.brain = brain
+		
 
 	def doSomething(self) :
 		if self.lastState is not None :
