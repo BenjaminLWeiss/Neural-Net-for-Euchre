@@ -73,7 +73,7 @@ class DQNAgent:
 		bidHistory = Input(shape=(numPlayers,len(bids),2*numPlayers),name='bidHistory')
 		currentHand = Input(shape=(handSize,len(cards)),name='currentHand')
 		playHistory = Input(shape=(handSize,numPlayers,len(cards)),name='playHistory')
-
+	
 		nextLayer = Concatenate()([Flatten()(initialHand),
 					(actionCounter),
 					(upcard),
@@ -144,6 +144,9 @@ class ComputerPlayer(Player) :
 
 	def makeBid(self,currentRound,upCard,dealer) :
 		rankings = self.doSomething()
+		if currentRound > 0:
+			self.sortForBiddingRoundTwo(self.upcard.getSuit())
+			#NEED TO REINPUT TO NEURAL NET
 		self.lastAction = [r for r in rankings.getBids() if 
 				   self.isValidBid(bids[r],upCard,currentRound)][0]
 		print bids[self.lastAction]
@@ -175,6 +178,7 @@ class ComputerPlayer(Player) :
 		self.upcard = upcard
 		self.dealer = dealer
 		self.currentTrick = 0
+		self.sortForBiddingRoundOne(self.upcard.getSuit())
 
 		self.gameState = {}
 		self.gameState['initialHand'] = np.zeros((handSize,len(cards)))
@@ -187,7 +191,7 @@ class ComputerPlayer(Player) :
 		self.gameState['playHistory'] = np.zeros((handSize,numPlayers,len(cards)))
 		self.lastState = None
 		self.lastAction = None
-		
+		#Need to initialize currentHand and initialHand Should they both be sorted and ReSorted?
 
 	def incrementActionCounter(self) :
 		if sum(self.gameState['actionCounter']) == 3 :
