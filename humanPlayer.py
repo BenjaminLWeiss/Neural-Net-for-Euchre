@@ -20,6 +20,10 @@ cardinalDirections[3] = 'South'
 
 class HumanPlayer(Player):
 
+    def __init__(self):
+        super(HumanPlayer, self).__init__()
+        self.playToTrick = 0
+
     def makeBid(self, auctionRound, upcard, dealer_position):
         
         raw_input("Press Enter to continue...")
@@ -123,6 +127,9 @@ class HumanPlayer(Player):
     def announceCardPlayed(self, card, player):
 
         print "Player %s just played %s" % (cardinalDirections[player], card)
+        self.playToTrick += 1
+        if self.playToTrick % 4 == 0:
+            print "Next Trick:\n"
 
     def announceGameStart(self, hand, upcard, dealer, position):
         
