@@ -22,10 +22,12 @@ class HumanPlayer(Player):
 #        self.informUpCard(auctionRound)
         if auctionRound == 0:
             self.sortForBiddingRoundOne(self.upcard.getSuit())
-            title = 'The upcard is %s. \n Your hand is %s. \n Would you like to Bid, or Pass?' % (self.upcard, self.hand)
+            title = 'The upcard is %s. \n Your hand is %s. \n Would you like to Bid, or Pass?' % (self.upcard,
+                                                                                                  self.convertHandToText())
         else:
             self.sortForBiddingRoundTwo(self.upcard.getSuit())
-            title = 'The upcard was %r. \n Your hand is %r. \n Would you like to Bid, or Pass?' % (self.upcard, self.hand)
+            title = 'The upcard was %s. \n Your hand is %s. \n Would you like to Bid, or Pass?' % (self.upcard,
+                                                                                                   self.convertHandToText())
         options = ['Bid', 'Pass']
         
         picker = Picker(options, title)
@@ -52,10 +54,10 @@ class HumanPlayer(Player):
         
         if auctionRound == 1:
             print "The up card is"
-            self.upcard
+            print self.upcard
         else:
             print "The up card was"
-            self.upcard
+            print self.upcard
         
 
     def selectTrump(self):
@@ -92,7 +94,7 @@ class HumanPlayer(Player):
         self.sortForPlay(trump_suit)
 
 #        validCards = [[c.getSuit(),c.getRank()] for c in self.hand if self.isValidPlay(c, suitLed)]
-        title = '%r has been selected as trump, and you got %r as the upcard. Select a card to return:' % (trump_suit, self.upcard)
+        title = '%s has been selected as trump, and you got %s as the upcard. Select a card to return:' % (trump_suit, self.upcard)
         picker = Picker(self.hand, title)
         toReturn, index = picker.start()
         self.hand.remove(toReturn)
@@ -101,7 +103,7 @@ class HumanPlayer(Player):
 
         raw_input("Press Enter to continue...")
         validCards = [c for c in self.hand if self.isValidPlay(c, suitLed)]
-        title = 'Here is the trick so far %r.\n Here is your remaining cards %r\n What card would you like to play? Here are your legal options:' % (trick, self.hand)
+        title = 'Here is the trick so far %s.\n Here is your remaining hand %s\n What card would you like to play? Here are your legal options:' % (self.convertTrickToText(trick), self.convertHandToText())
         picker = Picker(validCards, title)
         toPlay, index = picker.start()
         self.hand.remove(toPlay)
@@ -112,11 +114,11 @@ class HumanPlayer(Player):
         if bid.getSuit() is not BIDS.passbid:
             self.announceTrumpSuit(bid.getSuit())
             self.sortForPlay(bid.getSuit())
-        print "Player %r just bid %r" % (player, bid)
+        print "Player %d just bid %s" % (player, bid)
         
     def announceCardPlayed(self, card, player):
 
-        print "Player %r just played %r" % (player, card)
+        print "Player %d just played %s" % (player, card)
 
     def announceGameStart(self, hand, upcard, dealer, position):
         
@@ -125,10 +127,10 @@ class HumanPlayer(Player):
         self.dealer = dealer
         self.position = position
 
-        print "You are sitting in %r" % self.position
-        print "The dealer is in %r" % self.dealer
-        print "The upcard is %r" % self.upcard
-        print "Your hand is %r" % self.hand
+        print "You are sitting in %d" % self.position
+        print "The dealer is in %d" % self.dealer
+        print "The upcard is %s" % self.upcard
+        print "Your hand is %s" % self.convertHandToText()
         input = ("press any key to continue")
 
     def announceGameEnd(self, score):
@@ -138,3 +140,17 @@ class HumanPlayer(Player):
     def isDealer(self):
 
         return self.position % 4 == self.dealer % 4
+
+    def convertHandToText(self):
+        
+        text = ""
+        for c in self.hand:
+            text += "%s, " % c
+        return text
+
+    def convertTrickToText(self, trick):
+        
+        text = ""
+        for c in trick:
+            text += "%s, " % c
+        return text
