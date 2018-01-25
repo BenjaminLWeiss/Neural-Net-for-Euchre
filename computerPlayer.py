@@ -186,6 +186,7 @@ class ComputerPlayer(Player) :
 		self.upcard = upcard
 		self.dealer = dealer
 		self.currentTrick = 0
+		self.currentBidRound = 0
 
 		self.gameState = {}
 		self.gameState['initialHand'] = np.zeros((handSize,len(cards)))
