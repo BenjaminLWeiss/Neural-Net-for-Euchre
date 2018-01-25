@@ -161,9 +161,10 @@ class ComputerPlayer(Player) :
 	def swapUpCard(self) :
 		rankings = self.doSomething()
 		self.hand.append(self.upcard)
+		self.sortForPlay(self.trump)
 		self.lastAction = [r for r in rankings.getSwaps() if cards[r] in self.hand][0]
 		self.hand.remove(cards[self.lastAction])
-		self.sortForPlay(self.trump)
+		#self.sortForPlay(self.trump)
 		# Now we have to reload the self.gamestate the hand again since it has changed.
 		self.announceTrumpSuit(self.upcard.suit)
 		
