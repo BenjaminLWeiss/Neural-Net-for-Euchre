@@ -144,7 +144,9 @@ class ComputerPlayer(Player) :
 
 	def makeBid(self,currentRound,upCard,dealer) :
 		rankings = self.doSomething()
-		self.lastAction = [r for r in rankings.getBids() if self.isValidBid(bids[r],upCard,self.currentBidRound)][0]
+		self.lastAction = [r for r in rankings.getBids() if 
+				   self.isValidBid(bids[r],upCard,currentRound)][0]
+		print bids[self.lastAction]
 		return bids[self.lastAction]
 
 	def playCard(self, suitLed, trick=None) :
