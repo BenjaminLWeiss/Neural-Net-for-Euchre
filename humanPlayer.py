@@ -12,7 +12,11 @@ from pick import Picker
 
 #def go_back(picker):
 #    return (None, -1)
-
+cardinalDirections = {}
+cardinalDirections[0] = 'West'
+cardinalDirections[1] = 'North'
+cardinalDirections[2] = 'East'
+cardinalDirections[3] = 'South'
 
 class HumanPlayer(Player):
 
@@ -114,11 +118,11 @@ class HumanPlayer(Player):
         if bid.getSuit() is not BIDS.passbid:
             self.announceTrumpSuit(bid.getSuit())
             self.sortForPlay(bid.getSuit())
-        print "Player %d just bid %s" % (player, bid)
+        print "Player %s just bid %s" % (cardinalDirections[player], bid)
         
     def announceCardPlayed(self, card, player):
 
-        print "Player %d just played %s" % (player, card)
+        print "Player %s just played %s" % (cardinalDirections[player], card)
 
     def announceGameStart(self, hand, upcard, dealer, position):
         
@@ -127,8 +131,8 @@ class HumanPlayer(Player):
         self.dealer = dealer
         self.position = position
 
-        print "You are sitting in %d" % self.position
-        print "The dealer is in %d" % self.dealer
+        print "You are sitting in %s" % cardinalDirections[self.position]
+        print "The dealer is in %s" % cardinalDirections[self.dealer]
         print "The upcard is %s" % self.upcard
         print "Your hand is %s" % self.convertHandToText()
         input = ("press any key to continue")
