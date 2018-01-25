@@ -173,6 +173,7 @@ class ComputerPlayer(Player) :
 		self.hand = hand
 		self.upcard = upcard
 		self.dealer = dealer
+		self.currentTrick = 0
 
 		self.gameState = {}
 		self.gameState['initialHand'] = np.zeros((handSize,len(cards)))
@@ -203,7 +204,8 @@ class ComputerPlayer(Player) :
 		self.currentBidRound += 1
 
 	def announceCardPlayed(self,card, player) :
-		self.gameState['playHistory'][self.currentTrick/4,self.positionToIndex(player),cardIndex[card]] = 1
+		self.gameState['playHistory'][self.currentTrick/4,
+					      self.positionToIndex(player),cardIndex[card]] = 1
 		self.incrementActionCounter()
 		self.currentTrick += 1
 
