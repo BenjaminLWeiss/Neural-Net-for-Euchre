@@ -392,10 +392,16 @@ class GameMaster:
                     # Forces players to bid only upcard suit 1st round
                     Bid = Call([None, None])
                     Number_of_Passes += 1
+
                 elif auctionRound == 1 and Bid.getSuit() == UpCard.getSuit():
                     # Prevents players from bidding upcard suit 2nd round
                     Bid = Call([None, None])
                     Number_of_Passes += 1
+                    if Number_of_Passes == 8:
+                        if UpCard.getSuit() == SUITS.HEART:
+                            Bid = Call([SUITS.SPADE, False])
+                        else: Bid = Call([SUITS.HEART, False])
+                       
                 for x in self.Play_Order:
                     x.announceBidMade(Bid, Player_Turn)
                 if Bid.getSuit() is not None:
@@ -403,11 +409,11 @@ class GameMaster:
                     Bid_made = True
                     if auctionRound == 0:
                         self.Play_Order[Dealer_Position].swapUpCard()
-                    
-                    '''for c in Deck:
-                        c.declareTrump(Bid.getSuit())
-                    Bid_made = True'''
+                else: Player_Turn = (Player_Turn + 1) % 4
+      
+      
+      
 
-        print Bid
+      #  print Bid
                     # The players should be running the above for loop on their own
         return Bid, Declarer
