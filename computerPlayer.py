@@ -192,6 +192,10 @@ class ComputerPlayer(Player) :
 			self.gameState['actionCounter'][sum(self.gameState['actionCounter'])] = 1
 
 	def announceBidMade(self,bid, player) :
+		if bid.getSuit() is not BIDS.passbid:
+			self.announceTrumpSuit(bid.getSuit())
+			self.sortForPlay(bid.getSuit())
+			# Resort and refill self.gameState
 		self.gameState['bidHistory'][self.positionToIndex(player),bidIndex[bid],self.currentBidRound] = 1
 		self.incrementActionCounter()
 		self.currentBidRound += 1
@@ -208,8 +212,8 @@ class ComputerPlayer(Player) :
 			self.brain.replay(batchSize)
 
 	def announceTrumpSuit(self,suit) :
-		super(ComputerPlayer,self).announceTrumpSuit(suit)
-		# Resort hand by new trump values and fill in the currentHand matrix (don't assume that it's already 0's)
+		for card in self.hand:
+			card.declareTrump(suit)
 		self.trump = suit
 
 
