@@ -230,11 +230,13 @@ class GameMaster:
         Suit_Led = None
         for turn in xrange(4): # turn is for turn to play in the trick
             Player_Turn = (Trick_Leader + turn) % 4 
-            To_Play = self.Play_Order[Player_Turn].playCard(Suit_Led, Trick)
+
                 #To_Play.declareTrump(Bid.getSuit()) This line can be uncommented if you are worried
                 # The players are not correctly setting Trump
             if Player_Turn == Skipped_Player:
                 To_Play = None
+            else:
+                To_Play = self.Play_Order[Player_Turn].playCard(Suit_Led, Trick)
             
             Trick[turn] = To_Play
             Suit_Led = Trick[0].getSuit()
