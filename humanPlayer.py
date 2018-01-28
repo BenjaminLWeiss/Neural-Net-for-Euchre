@@ -52,7 +52,7 @@ class HumanPlayer(Player):
             if self.isValidBid(BIDS.passbid, self.upcard, auctionRound):
                 return BIDS.passbid
             else:
-				print self.upcard, auctionRound
+                print self.upcard, auctionRound
                 print "You may not passout the hand"
                 return self.makeBid(auctionRound, upcard, dealer_position)
 

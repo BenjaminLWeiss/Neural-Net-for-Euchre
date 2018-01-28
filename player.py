@@ -15,7 +15,7 @@ class Player(object) :
         return card in cardsInSuit
  
     def isValidBid(self,bid,upcard,auctionRound) :
-        if auctionRound == 0 and not bid.getSuit() == upcard.suit :
+        if auctionRound == 0 and bid.getSuit() is not None and not bid.getSuit() == upcard.suit :
             return False
         if auctionRound == 1 and bid.getSuit() == upcard.suit :
             return False
