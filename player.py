@@ -60,30 +60,53 @@ class Player(object) :
         pass
 
     def sortForBiddingRoundOne(self, suit):
+		def score(card):
+		    score = card.getRank().value
+		    if card.getSuit() == suit:
+		        if score == 11: score += 5
+		        score += 20
+		    if score == 11:
+		        if suit == SUITS.spades and card.getSuit() == SUITS.clubs:
+		            score += 24
+		        elif suit == SUITS.hearts and card.getSuit() == SUITS.diamonds:
+		            score += 24
+		        elif suit == SUITS.diamonds and card.getSuit() == SUITS.hearts:
+		            score += 24
+		        elif suit == SUITS.clubs and card.getSuit() == SUITS.spades:
+		            score += 24
 
-        for i in xrange(len(self.hand)):
-            for j in xrange(i+1, len(self.hand)):
-                if self.hand[j].scoreForBiddingRoundOne(suit) > self.hand[i].scoreForBiddingRoundOne(suit):
-                    self.hand[i], self.hand[j] = self.hand[j], self.hand[i]
-                    
-                    
+		    return score
+
+		self.hand = sorted(self.hand,key=score)                   
 
     def sortForBiddingRoundTwo(self, suit):
+		def score(card):
+		    score = card.getRank().value
+		    if card.getSuit() == suit:
+		        score -= 10
+		    if score == 11:
+		        score += 15
+		    return score
 
-        for i in xrange(len(self.hand)):
-            for j in xrange(i+1, len(self.hand)):
-                if self.hand[j].scoreForBiddingRoundTwo(suit) > self.hand[i].scoreForBiddingRoundTwo(suit):
-                    self.hand[i], self.hand[j] = self.hand[j], self.hand[i]
-                    
+		self.hand = sorted(self.hand,key=score)
         
 
     def sortForPlay(self, suit):
+		def score(card):
+		    score = card.getRank().value
+		    if card.getSuit() == SUITS.trump:
+		        score += 10
+		    
+		    if card.getSuit() == SUITS.spades and suit == SUITS.clubs:
+		        score -= 2
+		    elif card.getSuit() == SUITS.hearts and suit == SUITS.diamonds:
+		        score -= 2
+		    elif card.getSuit() == SUITS.diamonds and suit == SUITS.hearts:
+		        score -= 2
+		    elif card.getSuit() == SUITS.clubs and suit == SUITS.spades:
+		        score -= 2
 
-        for i in xrange(len(self.hand)):
-            for j in xrange(i+1, len(self.hand)):
-                if self.hand[j].scoreForPlay(suit) > self.hand[i].scoreForPlay(suit):
-                    self.hand[i], self.hand[j] = self.hand[j], self.hand[i]
-                    
+		    return score
 
-
+		self.hand = sorted(self.hand,key=score)
 

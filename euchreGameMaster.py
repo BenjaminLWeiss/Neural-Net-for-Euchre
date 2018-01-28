@@ -111,50 +111,6 @@ class EuchreCard:
                 self.suit = SUITS.trump
                 self.rank = RANKS.left
 
-    def scoreForBiddingRoundOne(self, suit):
-
-        score = self.getRank().value
-        if self.getSuit() == suit:
-            if score == 11: score += 5
-            score += 20
-        if score == 11:
-            if suit == SUITS.spades and self.getSuit() == SUITS.clubs:
-                score += 24
-            elif suit == SUITS.hearts and self.getSuit() == SUITS.diamonds:
-                score += 24
-            elif suit == SUITS.diamonds and self.getSuit() == SUITS.hearts:
-                score += 24
-            elif suit == SUITS.clubs and self.getSuit() == SUITS.spades:
-                score += 24
-
-        return score
-
-    def scoreForBiddingRoundTwo(self, suit):
-
-        score = self.getRank().value
-        if self.getSuit() == suit:
-            score -= 10
-        if score == 11:
-            score += 15
-        return score
-
-    def scoreForPlay(self, suit):
-
-        score = self.getRank().value
-        if self.getSuit() == SUITS.trump:
-            score += 10
-        
-        if self.getSuit() == SUITS.spades and suit == SUITS.clubs:
-            score -= 2
-        elif self.getSuit() == SUITS.hearts and suit == SUITS.diamonds:
-            score -= 2
-        elif self.getSuit() == SUITS.diamonds and suit == SUITS.hearts:
-            score -= 2
-        elif self.getSuit() == SUITS.clubs and suit == SUITS.spades:
-            score -= 2
-
-        return score
-
 class GameMaster:
 
     def __init__(self, PlayerWest, PlayerNorth, PlayerEast, PlayerSouth):
