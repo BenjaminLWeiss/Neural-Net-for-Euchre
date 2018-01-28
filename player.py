@@ -1,8 +1,7 @@
 from euchreGameMaster import SUITS
 from euchreGameMaster import POSITIONS
-from euchreGameMaster import RANK
+from euchreGameMaster import RANKS
 from euchreGameMaster import BIDS
-from euchreGameMaster import Call
 
 class Player(object) :
     def isValidPlay(self,card,suitLed) :
@@ -16,11 +15,11 @@ class Player(object) :
         return card in cardsInSuit
  
     def isValidBid(self,bid,upcard,auctionRound) :
-        if auctionRound == 0 and not bid.suit == Call(BIDS.passbid).getSuit() and not bid.suit == upcard.suit :
+        if auctionRound == 0 and not bid.getSuit() == upcard.suit :
             return False
-        if auctionRound == 1 and bid.suit == upcard.suit :
+        if auctionRound == 1 and bid.getSuit() == upcard.suit :
             return False
-        if auctionRound == 1 and self.dealer == self.position and bid.suit == Call(BIDS.passbid).getSuit():
+        if auctionRound == 1 and self.dealer == self.position and bid.getSuit() is None:
             return False
 
         return True
@@ -40,7 +39,7 @@ class Player(object) :
  
     #Subclasses can override these to actually do something intelligent
     def makeBid(self, auctionRound, upcard, dealer) :
-        return Call(BIDS.passbid)
+        return BIDS.passbid
  
     def playCard(self, suitLed, trick=None) :
         validCards = [c for c in self.hand if self.isValidPlay(c,suitLed)]

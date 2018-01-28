@@ -2,9 +2,7 @@
 import curses
 from euchreGameMaster import SUITS
 from euchreGameMaster import POSITIONS
-from euchreGameMaster import RANK
 from euchreGameMaster import EuchreCard
-from euchreGameMaster import Call
 from euchreGameMaster import BIDS
 from euchreGameMaster import GameMaster 
 from player import Player
@@ -51,9 +49,10 @@ class HumanPlayer(Player):
                 return self.makeBid(auctionRound, upcard, dealer_position)
             
         elif option == 'Pass':
-            if self.isValidBid(Call(BIDS.passbid), self.upcard, auctionRound):
-                return Call(BIDS.passbid)
+            if self.isValidBid(BIDS.passbid, self.upcard, auctionRound):
+                return BIDS.passbid
             else:
+				print self.upcard, auctionRound
                 print "You may not passout the hand"
                 return self.makeBid(auctionRound, upcard, dealer_position)
 
@@ -83,15 +82,15 @@ class HumanPlayer(Player):
         Alone = alone == 'Yes, alone'
         suit = None
         if choice == 'Spades':
-            suit = SUITS.SPADE
+            suit = SUITS.spades
         elif choice == 'Hearts':
-            suit = SUITS.HEART
+            suit = SUITS.hearts
         elif choice == 'Diamonds':
-            suit = SUITS.DIAMOND
+            suit = SUITS.diamonds
         elif choice == 'Clubs':
-            suit = SUITS.CLUB
+            suit = SUITS.clubs
         
-        return Call([suit, Alone])
+        return BIDS[(suit, Alone)]
 
     def swapUpCard(self):
         

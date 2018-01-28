@@ -8,16 +8,59 @@
 
 
 from random import shuffle as shuf
+from enum import Enum
 
-def enum(**named_values):
-    return type('Enum', (), named_values)
-
-SUITS = enum(HEART = 'heart', SPADE = 'spade', DIAMOND = 'diamond', CLUB = 'club', TRUMP = 'trump') 
 # During play, the Trump suit will be entirely replaced by Trump (in addition to the Left) 
+class SUITS(Enum) :
+	hearts = 0
+	spades = 1
+	diamonds = 2
+	clubs = 3
+	trump = 4
+ 
+class POSITIONS(Enum) :
+	west = 0
+	north = 1
+	east = 2
+	south = 3
 
-POSITIONS = enum(WEST = 0, NORTH = 1, EAST = 2, SOUTH = 3)
-RANK = enum(NINE = 9, TEN = 10, JACK = 11, QUEEN = 12, KING = 13, ACE = 14, LEFT = 15, RIGHT = 16)
-BIDS = enum(passbid = [None, None], hearts = [SUITS.HEART, False], heartsALONE = [SUITS.HEART, True], spades = [SUITS.SPADE, False], spadesALONE = [SUITS.SPADE, True], clubs = [SUITS.CLUB, False], clubsALONE = [SUITS.CLUB, True], diamonds = [SUITS.DIAMOND, False], diamondsALONE = [SUITS.DIAMOND, True])
+class RANKS(Enum) :
+	nine = 9
+	ten = 10
+	jack = 11
+	queen = 12
+	king = 13
+	ace = 14
+	left = 15
+	right = 16
+	
+	def __lt__(self,other) :
+		return self.value < other.value
+
+	def __gt__(self,other) :
+		return self.value > other.value
+
+class BIDS(Enum) :
+	passbid = (None, None)
+	hearts = (SUITS.hearts, False)
+	heartsALONE = (SUITS.hearts, True)
+	spades = (SUITS.spades, False)
+	spadesALONE = (SUITS.spades, True)
+	clubs = (SUITS.clubs, False)
+	clubsALONE = (SUITS.clubs, True)
+	diamonds = (SUITS.diamonds, False)
+	diamondsALONE = (SUITS.diamonds, True)
+
+	def __str__(self) :
+		if self.value[0] is None :
+			return 'pass'
+		return self.value[0].name
+
+	def getSuit(self) :
+		return self.value[0]
+
+	def goAlone(self) :
+		return self.value[1]
 
 
 class EuchreCard:
@@ -26,35 +69,22 @@ class EuchreCard:
     # for trump and 9 through 14 skipping 11 for non-trump same color)
 
     def __init__(self, suit, rank):
-        if suit not in (SUITS.HEART, SUITS.SPADE, SUITS.DIAMOND, SUITS.CLUB, SUITS.TRUMP):
+        if suit not in SUITS :
             print "Suit choice not valid"
         self.suit = suit
-        if rank not in (RANK.NINE, RANK.TEN, RANK.JACK, RANK.QUEEN, RANK.KING, RANK.ACE, RANK.LEFT, RANK.RIGHT):
-            print('Rank choice Not Valid')
+        if rank not in RANKS :
+            print('Rank choice Not Valid: '+ rank.name)
         self.rank = rank
 
     def __eq__(self,other) :
         return hasattr(other,'rank') and self.rank == other.rank and hasattr(other,'suit') and self.suit == other.suit
 
     def __hash__(self) :
-
         return hash(self.suit) ^ hash(self.rank)
 
 
     def __str__(self):
-
-        text_rank = None
-        if self.rank == RANK.NINE:
-            text_rank = 'Nine'
-        elif self.rank == RANK.TEN:
-            text_rank = 'Ten'
-        elif self.rank == RANK.JACK: text_rank = 'Jack'
-        elif self.rank == RANK.QUEEN: text_rank = 'Queen'
-        elif self.rank == RANK.KING: text_rank = 'King'
-        elif self.rank == RANK.ACE: text_rank = 'Ace'
-        elif self.rank == RANK.LEFT: text_rank = 'Left'
-        elif self.rank == RANK.RIGHT: text_rank = 'Right'
-        return self.suit + " " + text_rank
+		return self.rank.name + ' of ' + self.suit.name
 
     def getSuit(self): #Just for simplicity in reading
         return self.suit
@@ -64,115 +94,66 @@ class EuchreCard:
 
     def declareTrump(self, suit): #This replaces the trump suit as Trump
         if self.suit == suit:
-            self.suit = SUITS.TRUMP
-            if self.rank == RANK.JACK:
-                self.rank = RANK.RIGHT
-        elif self.rank == RANK.JACK:
-            if suit == SUITS.SPADE and self.suit == SUITS.CLUB:
-                self.suit = SUITS.TRUMP
-                self.rank = RANK.LEFT
-            elif suit == SUITS.HEART and self.suit == SUITS.DIAMOND:
-                self.suit = SUITS.TRUMP
-                self.rank = RANK.LEFT
-            elif suit == SUITS.DIAMOND and self.suit == SUITS.HEART:
-                self.suit = SUITS.TRUMP
-                self.rank = RANK.LEFT
-            elif suit == SUITS.CLUB and self.suit == SUITS.SPADE:
-                self.suit = SUITS.TRUMP
-                self.rank = RANK.LEFT
+            self.suit = SUITS.trump
+            if self.rank == RANKS.jack:
+                self.rank = RANKS.right
+        elif self.rank == RANKS.jack:
+            if suit == SUITS.spades and self.suit == SUITS.clubs:
+                self.suit = SUITS.trump
+                self.rank = RANKS.left
+            elif suit == SUITS.hearts and self.suit == SUITS.diamonds:
+                self.suit = SUITS.trump
+                self.rank = RANKS.left
+            elif suit == SUITS.diamonds and self.suit == SUITS.hearts:
+                self.suit = SUITS.trump
+                self.rank = RANKS.left
+            elif suit == SUITS.clubs and self.suit == SUITS.spades:
+                self.suit = SUITS.trump
+                self.rank = RANKS.left
 
     def scoreForBiddingRoundOne(self, suit):
 
-        score = self.getRank()
+        score = self.getRank().value
         if self.getSuit() == suit:
             if score == 11: score += 5
             score += 20
         if score == 11:
-            if suit == SUITS.SPADE and self.getSuit() == SUITS.CLUB:
+            if suit == SUITS.spades and self.getSuit() == SUITS.clubs:
                 score += 24
-            elif suit == SUITS.HEART and self.getSuit() == SUITS.DIAMOND:
+            elif suit == SUITS.hearts and self.getSuit() == SUITS.diamonds:
                 score += 24
-            elif suit == SUITS.DIAMOND and self.getSuit() == SUITS.HEART:
+            elif suit == SUITS.diamonds and self.getSuit() == SUITS.hearts:
                 score += 24
-            elif suit == SUITS.CLUB and self.getSuit() == SUITS.SPADE:
+            elif suit == SUITS.clubs and self.getSuit() == SUITS.spades:
                 score += 24
 
         return score
 
     def scoreForBiddingRoundTwo(self, suit):
 
-        score = self.getRank()
+        score = self.getRank().value
         if self.getSuit() == suit:
             score -= 10
         if score == 11:
             score += 15
-
-#        if suit == SUITS.SPADE and self.getSuit() == SUITS.CLUB:
-#            score += 10
-#        elif suit == SUITS.HEART and self.getSuit() == SUITS.DIAMOND:
-#            score += 10
-#        elif suit == SUITS.DIAMOND and self.getSuit() == SUITS.HEART:
-#            score += 10
-#        elif suit == SUITS.CLUB and self.getSuit() == SUITS.SPADE:
-#            score += 10
-
-
         return score
 
     def scoreForPlay(self, suit):
 
-        score = self.getRank()
-        if self.getSuit() == SUITS.TRUMP:
+        score = self.getRank().value
+        if self.getSuit() == SUITS.trump:
             score += 10
         
-        if self.getSuit() == SUITS.SPADE and suit == SUITS.CLUB:
+        if self.getSuit() == SUITS.spades and suit == SUITS.clubs:
             score -= 2
-        elif self.getSuit() == SUITS.HEART and suit == SUITS.DIAMOND:
+        elif self.getSuit() == SUITS.hearts and suit == SUITS.diamonds:
             score -= 2
-        elif self.getSuit() == SUITS.DIAMOND and suit == SUITS.HEART:
+        elif self.getSuit() == SUITS.diamonds and suit == SUITS.hearts:
             score -= 2
-        elif self.getSuit() == SUITS.CLUB and suit == SUITS.SPADE:
+        elif self.getSuit() == SUITS.clubs and suit == SUITS.spades:
             score -= 2
 
         return score
-
-
-class Call: #This class is for calls made during the auction
-
-    def __init__(self, bid):
-        suit = bid[0]
-        alone = bid[1]
-        if suit is not None and suit not in (SUITS.SPADE, SUITS.HEART, SUITS.DIAMOND, SUITS.CLUB):
-            print('Bid Suit Not Valid')
-        self.suit = suit
-        if alone is not None and alone not in (False, True):
-            print('Alone Call not True/False')
-        self.alone = alone
-        
-    def __eq__(self,other) :
-        return hasattr(other,'suit') and self.suit == other.suit and hasattr(other,'alone') and self.alone == other.alone
-
-    def __hash__(self) :
-        return hash(self.suit) ^ hash(self.alone)
-
-    def __str__(self):
-        
-        bid = None
-        alone = None
-        if self.getSuit() is None:
-            bid = 'Pass'
-            return bid
-        else:
-            if self.goAlone():
-                alone = 'Alone'
-            else: alone = ''
-            return str(self.getSuit()) + alone
-    
-    def getSuit(self):
-        return self.suit
-
-    def goAlone(self):
-        return self.alone
 
 class GameMaster:
 
@@ -224,7 +205,7 @@ class GameMaster:
 
 
     def oneTrick(self, Skipped_Player, Trick_Leader):
-# Begins cardplay round
+	# Begins cardplay round
 
         Trick = [None, None, None, None] # Stores the 4 cards in the trick
         Suit_Led = None
@@ -266,13 +247,13 @@ class GameMaster:
         Trump_Played = False
         for c in Trick:
             if c is not None:
-                if c.getSuit() == SUITS.TRUMP:
+                if c.getSuit() == SUITS.trump:
                     Trump_Played = True
         
         if Trump_Played:
             for x in xrange(4):
                 if Trick[x] is not None:
-                    if Trick[x].getSuit() == SUITS.TRUMP:
+                    if Trick[x].getSuit() == SUITS.trump:
                         if winning_index is not None:
                             if Trick[x].getRank() > Trick[winning_index].getRank():
                                 winning_index = x
@@ -287,8 +268,8 @@ class GameMaster:
                             winning_index = x
                             
         return winning_index
-    ## W/E = 0/2 and N/S = 1/3
-            # Now we score the trick for the winning pair.
+    	## W/E = 0/2 and N/S = 1/3
+        # Now we score the trick for the winning pair.
       
     def trickTotal(self, Trick_Leader, winning_index, NS_Trick_Total, EW_Trick_Total):
         if (Trick_Leader + winning_index) % 2 == 0:
@@ -297,11 +278,11 @@ class GameMaster:
             NS_Trick_Total += 1
 
         return NS_Trick_Total, EW_Trick_Total
-            # Determine the leader for the next trick
-            #Trick_Leader = (Trick_Leader + winning_index) % 4
+         # Determine the leader for the next trick
+         #Trick_Leader = (Trick_Leader + winning_index) % 4
 
     def gameOver(self, NS_Trick_Total, EW_Trick_Total, Declarer, Alone):
-            # Check if the trick totals mean the score has been determined
+        # Check if the trick totals mean the score has been determined
         if Declarer % 2 == 0:
             if NS_Trick_Total > 2:
                 self.returnScore(2)
@@ -333,11 +314,9 @@ class GameMaster:
         self.Play_Order[2].announceGameEnd(-score)
 
     def resetDeck(self):
-        
-        NewDeck = [] #Initializes deck
-        for s in [SUITS.SPADE, SUITS.HEART, SUITS.DIAMOND, SUITS.CLUB]:
-            for r in xrange(9, 15):
-                NewDeck.append(EuchreCard(s, r))
+         #Initializes deck
+        NewDeck = [EuchreCard(s,r) for s in [SUITS.hearts,SUITS.spades,SUITS.diamonds,SUITS.clubs]
+						 for r in [RANKS.nine,RANKS.ten,RANKS.jack,RANKS.queen,RANKS.king,RANKS.ace]]
 
         shuf(NewDeck) #Shuffles deck
         return NewDeck
@@ -361,7 +340,7 @@ class GameMaster:
 
         Bid_made = False
         Player_Turn = (Dealer_Position + 1) % 4
-        Bid = Call([None, None])
+        Bid = BIDS.passbid
         Declarer = None
         Number_of_Passes = 0
         auctionRound = 0
@@ -375,9 +354,9 @@ class GameMaster:
             if Bid.getSuit() is None:
 
                 if Number_of_Passes == 7: # Forces Dealer to Bid Spades or Hearts
-                    if UpCard.getSuit() == SUITS.HEART:
-                        Bid = Call([SUITS.SPADE, False])
-                    else: Bid = Call([SUITS.HEART, False])
+                    if UpCard.getSuit() == SUITS.hearts:
+                        Bid = BIDS.spades
+                    else: Bid = BIDS.hearts
                     Bid_made = True
                     Declarer = Player_Turn
                     '''for c in Deck:
@@ -392,17 +371,17 @@ class GameMaster:
             else:
                 if auctionRound == 0 and Bid.getSuit() != UpCard.getSuit():
                     # Forces players to bid only upcard suit 1st round
-                    Bid = Call([None, None])
+                    Bid = BIDS.passbid
                     Number_of_Passes += 1
 
                 elif auctionRound == 1 and Bid.getSuit() == UpCard.getSuit():
                     # Prevents players from bidding upcard suit 2nd round
-                    Bid = Call([None, None])
+                    Bid = BIDS.passbid
                     Number_of_Passes += 1
                     if Number_of_Passes == 8:
-                        if UpCard.getSuit() == SUITS.HEART:
-                            Bid = Call([SUITS.SPADE, False])
-                        else: Bid = Call([SUITS.HEART, False])
+                        if UpCard.getSuit() == SUITS.hearts:
+                            Bid = BIDS.spades
+                        else: Bid = BIDS.hearts
                        
                 for x in self.Play_Order:
                     x.announceBidMade(Bid, Player_Turn)
@@ -412,9 +391,6 @@ class GameMaster:
                     if auctionRound == 0:
                         self.Play_Order[Dealer_Position].swapUpCard()
                 else: Player_Turn = (Player_Turn + 1) % 4
-      
-      
-      
 
       #  print Bid
                     # The players should be running the above for loop on their own
