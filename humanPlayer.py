@@ -152,15 +152,8 @@ class HumanPlayer(Player):
         return self.position % 4 == self.dealer % 4
 
     def convertHandToText(self):
-        
-        text = ""
-        for c in self.hand:
-            text += "%s, " % c
-        return text
+        return ", ".join(self.hand)
 
     def convertTrickToText(self, trick):
-        
-        text = ""
-        for c in trick:
-            text += "%s, " % c
-        return text
+        return ", ".join(trick)
+
