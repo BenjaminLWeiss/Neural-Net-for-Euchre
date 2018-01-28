@@ -9,6 +9,7 @@
 
 from random import shuffle as shuf
 from enum import Enum
+from enum import IntEnum
 
 # During play, the Trump suit will be entirely replaced by Trump (in addition to the Left) 
 class SUITS(Enum) :
@@ -18,7 +19,7 @@ class SUITS(Enum) :
 	clubs = 3
 	trump = 4
  
-class POSITIONS(Enum) :
+class POSITIONS(IntEnum) :
 	west = 0
 	north = 1
 	east = 2
@@ -81,7 +82,6 @@ class EuchreCard:
 
     def __hash__(self) :
         return hash(self.suit) ^ hash(self.rank)
-
 
     def __str__(self):
 		return self.rank.name + ' of ' + self.suit.name

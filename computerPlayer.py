@@ -91,7 +91,9 @@ class DQNAgent:
 		if np.random.rand() <= self.epsilon :
 			response = np.random.randn(self.action_size,)
 		else :
-			response = self.model.predict(state)
+			response = self.model.predict(state)[0]
+		if len(response) < len(BIDS) :
+			print len(response)
 		return PlayRanking(response[:len(BIDS)],response[len(BIDS):len(BIDS)+len(cards)],
 				   response[len(BIDS)+len(cards):])
         
@@ -127,7 +129,6 @@ class ComputerPlayer(Player) :
 		else :
 			self.brain = brain
 		
-
 	def doSomething(self) :
 		if self.lastState is not None :
 			self.brain.remember(self.lastState,self.lastAction,0,self.gameState,False)
@@ -138,17 +139,22 @@ class ComputerPlayer(Player) :
 		rankings = self.doSomething()
 		if currentRound > 0:
 			self.sortForBiddingRoundTwo(self.upcard.getSuit())
-			self.fillInitialHand()
-			self.gameState['currentHand'] = self.gameState['initialHand']
+			self.setHandState('currentHand')
 		self.lastAction = [r for r in rankings.getBids() if 
 				   self.isValidBid(bids[r],upCard,currentRound)][0]
 		return bids[self.lastAction]
 
 	def playCard(self, suitLed, trick=None) :
 		rankings = self.doSomething()
-		self.lastAction = [r for r in rankings.getCards() if self.isValidPlay(cards[r], suitLed)][0]
+		choice = [r for r in rankings.getCards() if self.isValidPlay(cards[r], suitLed)]
+		if len(choice) < 1 :
+			print len(rankings.getCards())
+			print rankings.cardScores
+			print [str(c) for c in self.hand]
+			print suitLed
+		self.lastAction = choice[0]
 		# Don't forget to remove the card from our hand
-		self.gameState['currentHand'][:,self.lastAction] = 0
+		self.gameState['currentHand'][0,:,self.lastAction] = 0
 		self.hand.remove(cards[self.lastAction])
 		
 		return cards[self.lastAction]
@@ -166,9 +172,9 @@ class ComputerPlayer(Player) :
 
 
 	def resetCurrentHand(self):
-		self.gameState['currentHand'] = np.zeros((handSize,len(cards)))
+		self.gameState['currentHand'] = np.zeros((1,handSize,len(cards)))
 		for i in xrange(len(self.hand)):
-			self.gameState['currentHand'][i][cardIndex[self.hand[i]]] = 1
+			self.gameState['currentHand'][0,i,cardIndex[self.hand[i]]] = 1
 
 
 	def announceGameStart(self,hand,upcard,dealer,position) :
@@ -181,47 +187,42 @@ class ComputerPlayer(Player) :
 		self.currentBidRound = 0
 
 		self.gameState = {}
-		self.gameState['initialHand'] = np.zeros((handSize,len(cards)))
-		# Sort initial hand and fill in the initialHand matrix
-		self.gameState['actionCounter'] = np.zeros((numPlayers-1,), dtype=np.int)
-		self.gameState['upcard'] = np.zeros((len(cards),))
-		self.gameState['upcard'][cardIndex[upcard]] = 1
-		self.gameState['bidHistory'] = np.zeros((numPlayers,len(BIDS),2*numPlayers))
-		self.gameState['currentHand'] = np.zeros((handSize,len(cards)))
-		self.gameState['playHistory'] = np.zeros((handSize,numPlayers,len(cards)))
+		self.sortForBiddingRoundOne(self.upcard.getSuit())
+		self.setHandState('initialHand')
+		self.gameState['actionCounter'] = np.zeros((1,numPlayers-1,), dtype=np.int)
+		self.gameState['upcard'] = np.zeros((1,len(cards)))
+		self.gameState['upcard'][0,cardIndex[upcard]] = 1
+		self.gameState['bidHistory'] = np.zeros((1,numPlayers,len(BIDS),2*numPlayers))
+		self.gameState['currentHand'] = np.zeros((1,handSize,len(cards)))
+		self.gameState['playHistory'] = np.zeros((1,handSize,numPlayers,len(cards)))
 		self.lastState = None
 		self.lastAction = None
-		#Need to initialize currentHand and initialHand Should they both be sorted and ReSorted?
-		self.sortForBiddingRoundOne(self.upcard.getSuit())
-		self.fillInitialHand()
 		self.gameState['currentHand'] = self.gameState['initialHand']
 
 
 	def incrementActionCounter(self) :
-		if sum(self.gameState['actionCounter']) == 3 :
-			self.gameState['actionCounter'] = np.zeros((numPlayers-1,), dtype=np.int)
+		if sum(sum(self.gameState['actionCounter'])) == 3 :
+			self.gameState['actionCounter'] = np.zeros((1,numPlayers-1), dtype=np.int)
 		else :
 			self.gameState['actionCounter'][sum(self.gameState['actionCounter'])] = 1
 
-	def fillInitialHand(self):
-		self.gameState['initialHand'] = np.zeros((handSize,len(cards)))
+	def setHandState(self,field) :
+		self.gameState[field] = np.zeros((1,handSize,len(cards)))
 		for i in xrange(len(self.hand)):
-			self.gameState['initialHand'][i][cardIndex[self.hand[i]]] = 1
+			self.gameState[field][0,i,cardIndex[self.hand[i]]] = 1
 			
 
 	def announceBidMade(self,bid, player) :
 		if bid.getSuit() is not BIDS.passbid:
 			self.announceTrumpSuit(bid.getSuit())
 			self.sortForPlay(bid.getSuit())
-			self.fillInitialHand()
-			self.gameState['currentHand'] = self.gameState['initialHand']
-			# Resort and refill self.gameState
-		self.gameState['bidHistory'][self.positionToIndex(player),bidIndex[bid],self.currentBidRound] = 1
+			self.setHandState('currentHand')
+		self.gameState['bidHistory'][0,self.positionToIndex(player),bidIndex[bid],self.currentBidRound] = 1
 		self.incrementActionCounter()
 		self.currentBidRound += 1
 
 	def announceCardPlayed(self,card, player) :
-		self.gameState['playHistory'][self.currentTrick/4,
+		self.gameState['playHistory'][0,self.currentTrick/4,
 					      self.positionToIndex(player),cardIndex[card]] = 1
 		self.incrementActionCounter()
 		self.currentTrick += 1
@@ -236,7 +237,6 @@ class ComputerPlayer(Player) :
 		for card in self.hand:
 			card.declareTrump(suit)
 		self.trump = suit
-
 
 	def save(self, name):
 		self.brain.save(name)

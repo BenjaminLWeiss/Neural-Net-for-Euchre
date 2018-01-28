@@ -36,36 +36,14 @@ class Player(object) :
     def announceTrumpSuit(self, suit) :
         for card in self.hand :
             card.declareTrump(suit)
- 
-    #Subclasses can override these to actually do something intelligent
-    def makeBid(self, auctionRound, upcard, dealer) :
-        return BIDS.passbid
- 
-    def playCard(self, suitLed, trick=None) :
-        validCards = [c for c in self.hand if self.isValidPlay(c,suitLed)]
-        cardToPlay = validCards[0]
-        self.hand.remove(cardToPlay)
-        return cardToPlay
- 
-    def announceBidMade(self, bid, player) :
-        pass
- 
-    def announceCardPlayed(self, card, player) :
-        pass
- 
-    def announceGameEnd(self,score) :
-        pass
- 
-    def swapUpCard(self):
-        pass
 
     def sortForBiddingRoundOne(self, suit):
 		def score(card):
 		    score = card.getRank().value
 		    if card.getSuit() == suit:
-		        if score == 11: score += 5
+		        if card.getRank() == RANKS.jack: score += 5
 		        score += 20
-		    if score == 11:
+		    if card.getRank() == RANKS.jack:
 		        if suit == SUITS.spades and card.getSuit() == SUITS.clubs:
 		            score += 24
 		        elif suit == SUITS.hearts and card.getSuit() == SUITS.diamonds:
@@ -109,4 +87,27 @@ class Player(object) :
 		    return score
 
 		self.hand = sorted(self.hand,key=score)
+
+    #Subclasses can override these to actually do something intelligent
+    def makeBid(self, auctionRound, upcard, dealer) :
+        return BIDS.passbid
+ 
+    def playCard(self, suitLed, trick=None) :
+        validCards = [c for c in self.hand if self.isValidPlay(c,suitLed)]
+        cardToPlay = validCards[0]
+        self.hand.remove(cardToPlay)
+        return cardToPlay
+ 
+    def announceBidMade(self, bid, player) :
+        pass
+ 
+    def announceCardPlayed(self, card, player) :
+        pass
+ 
+    def announceGameEnd(self,score) :
+        pass
+ 
+    def swapUpCard(self):
+        pass
+
 
