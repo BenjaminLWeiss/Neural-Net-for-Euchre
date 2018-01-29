@@ -55,6 +55,8 @@ class BIDS(Enum) :
 	def __str__(self) :
 		if self.value[0] is None :
 			return 'pass'
+		if self.value[1]:
+			return self.value[0].name + "Alone"
 		return self.value[0].name
 
 	def getSuit(self) :

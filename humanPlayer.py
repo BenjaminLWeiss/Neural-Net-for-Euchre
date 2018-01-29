@@ -121,8 +121,8 @@ class HumanPlayer(Player):
         if bid.getSuit() is not BIDS.passbid:
             self.announceTrumpSuit(bid.getSuit())
             self.sortForPlay(bid.getSuit())
-        print "Player %s just bid %s" % (cardinalDirections[player], bid)
-        
+            print "Player %s just bid %s" % (cardinalDirections[player], bid)
+
     def announceCardPlayed(self, card, player):
 
         print "Player %s just played %s" % (cardinalDirections[player], card)
@@ -152,8 +152,16 @@ class HumanPlayer(Player):
         return self.position % 4 == self.dealer % 4
 
     def convertHandToText(self):
-        return ", ".join(self.hand)
+        text = str(self.hand[0]) + ", "
+        for i in xrange(1, len(self.hand) - 1):
+            text += str(self.hand[i]) + ", "
+        text += str(self.hand[-1]) + "."
+        return text
 
     def convertTrickToText(self, trick):
-        return ", ".join(trick)
+        text = str(trick[0]) + ", "
+        for i in xrange(1 ,len(trick) - 1):
+            text += str(trick[i]) + ", "
+        text += str(trick[-1]) + "."
+        return text
 
