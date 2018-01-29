@@ -11,7 +11,7 @@ def train(numEpochs) :
 	game = GameMaster(p1,p2,p3,p4)
 
 	# How many times around the table to play between saves
-	saveFrequency = 100
+	saveFrequency = 10
 
 	if numEpochs < 0 :
 		numEpochs = 9999999999
