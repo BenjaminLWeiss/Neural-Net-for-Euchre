@@ -2,6 +2,7 @@ def train(numEpochs,filenames) :
 	from computerPlayer import ComputerPlayer
 	from euchreGameMaster import GameMaster
 	from euchreGameMaster import POSITIONS
+	from random import shuffle
 
 	p1 = ComputerPlayer()
 	p1.load(filenames[0])
@@ -12,7 +13,10 @@ def train(numEpochs,filenames) :
 	p4 = ComputerPlayer()
 	p4.load(filenames[3])
 
-	game = GameMaster(p1,p2,p3,p4)
+	players = [p1, p2, p3, p4]
+	shuffle(players)
+
+	game = GameMaster(players[0], players[1], players[2], players[3])
 
 	# How many times around the table to play between saves
 	saveFrequency = 10
