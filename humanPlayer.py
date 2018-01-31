@@ -90,7 +90,7 @@ class HumanPlayer(Player):
         elif choice == 'Clubs':
             suit = SUITS.clubs
         
-        return BIDS[(suit, Alone)]
+        return BIDS((suit, Alone))
 
     def swapUpCard(self):
         
@@ -101,7 +101,7 @@ class HumanPlayer(Player):
         self.sortForPlay(trump_suit)
 
 #        validCards = [[c.getSuit(),c.getRank()] for c in self.hand if self.isValidPlay(c, suitLed)]
-        title = '%s has been selected as trump, and you got %s as the upcard. Select a card to return:' % (trump_suit, self.upcard)
+        title = '%s has been selected as trump, and you got %s as the upcard. Select a card to return:' % (trump_suit.name, self.upcard)
         picker = Picker(self.hand, title)
         toReturn, index = picker.start()
         self.hand.remove(toReturn)
@@ -152,16 +152,8 @@ class HumanPlayer(Player):
         return self.position % 4 == self.dealer % 4
 
     def convertHandToText(self):
-        text = str(self.hand[0]) + ", "
-        for i in xrange(1, len(self.hand) - 1):
-            text += str(self.hand[i]) + ", "
-        text += str(self.hand[-1]) + "."
-        return text
+		return ", ".join(map(str,self.hand))
 
     def convertTrickToText(self, trick):
-        text = str(trick[0]) + ", "
-        for i in xrange(1 ,len(trick) - 1):
-            text += str(trick[i]) + ", "
-        text += str(trick[-1]) + "."
-        return text
+		return ", ".join(map(str,trick))
 
