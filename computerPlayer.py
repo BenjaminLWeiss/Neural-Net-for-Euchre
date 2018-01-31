@@ -47,13 +47,13 @@ class PlayRanking :
 # Class to handle construction and training of the neural net
 # modified from https://github.com/keon/deep-q-learning
 class DQNAgent:
-	def __init__(self, action_size):
+	def __init__(self, action_size,epsilon=1.0,epsilon_min=0.01,epsilon_decay=0.995):
 		self.action_size = action_size
 		self.memory = deque(maxlen=2000)
 		self.gamma = 0.95    # discount rate
-		self.epsilon = 1.0  # exploration rate
-		self.epsilon_min = 0.01
-		self.epsilon_decay = 0.995
+		self.epsilon = epsilon  # exploration rate
+		self.epsilon_min = epsilon_min
+		self.epsilon_decay = epsilon_decay
 		self.learning_rate = 0.001
 		self.model = self._build_model()
 
