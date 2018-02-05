@@ -93,7 +93,7 @@ class DQNAgent:
 		else :
 			response = self.model.predict(state)[0]
 		if len(response) < len(BIDS) :
-			print (len(response))
+			print len(response)
 		return PlayRanking(response[:len(BIDS)],response[len(BIDS):len(BIDS)+len(cards)],
 				   response[len(BIDS)+len(cards):])
         
