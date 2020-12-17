@@ -11,6 +11,8 @@ from collections import deque
 from keras.models import Model
 from keras.layers import Dense, Input, Concatenate, Flatten
 from keras.optimizers import Adam
+from keras.callbacks import TensorBoard
+from time import time
 
 # Define some game-related constants
 cards = [Card(suit, rank) for suit in SUITS for rank in RANKS]
@@ -93,7 +95,7 @@ class DQNAgent:
 		else :
 			response = self.model.predict(state)[0]
 		if len(response) < len(BIDS) :
-			print len(response)
+			print(len(response))
 		return PlayRanking(response[:len(BIDS)],response[len(BIDS):len(BIDS)+len(cards)],
 				   response[len(BIDS)+len(cards):])
         
@@ -106,6 +108,7 @@ class DQNAgent:
 					  np.amax(self.model.predict(next_state)[0]))
 			target_f = self.model.predict(state)
 			target_f[0][action] = target
+			#self.model.fit(state, target_f, epochs=1, verbose=0,callbacks=[TensorBoard(log_dir='logs/{}'.format(time()),write_graph=True,write_images=True)])
 			self.model.fit(state, target_f, epochs=1, verbose=0)
 		if self.epsilon > self.epsilon_min:
 			self.epsilon *= self.epsilon_decay
@@ -148,10 +151,10 @@ class ComputerPlayer(Player) :
 		rankings = self.doSomething()
 		choice = [r for r in rankings.getCards() if self.isValidPlay(cards[r], suitLed)]
 		if len(choice) < 1 :
-			print len(rankings.getCards())
-			print rankings.cardScores
-			print [str(c) for c in self.hand]
-			print suitLed
+			print(len(rankings.getCards()))
+			print(rankings.cardScores)
+			print([str(c) for c in self.hand])
+			print(suitLed)
 		self.lastAction = choice[0]
 		# Don't forget to remove the card from our hand
 		self.gameState['currentHand'][0,:,self.lastAction] = 0
@@ -159,21 +162,21 @@ class ComputerPlayer(Player) :
 		
 		return cards[self.lastAction]
 
-	def swapUpCard(self) :
+	def swapUpCard(self, upCard) :
 		rankings = self.doSomething()
-		self.hand.append(self.upcard)
+		self.hand.append(upCard)
 		self.sortForPlay(self.trump)
 		self.lastAction = [r for r in rankings.getSwaps() if cards[r] in self.hand][0]
 		self.hand.remove(cards[self.lastAction])
 		#self.sortForPlay(self.trump)
 		# Now we have to reload the self.gamestate the hand again since it has changed.
 		self.resetCurrentHand()
-		self.announceTrumpSuit(self.upcard.suit)
+		self.announceTrumpSuit(upCard.suit)
 
 
 	def resetCurrentHand(self):
 		self.gameState['currentHand'] = np.zeros((1,handSize,len(cards)))
-		for i in xrange(len(self.hand)):
+		for i in range(len(self.hand)):
 			self.gameState['currentHand'][0,i,cardIndex[self.hand[i]]] = 1
 
 
@@ -208,10 +211,9 @@ class ComputerPlayer(Player) :
 
 	def setHandState(self,field) :
 		self.gameState[field] = np.zeros((1,handSize,len(cards)))
-		for i in xrange(len(self.hand)):
+		for i in range(len(self.hand)):
 			self.gameState[field][0,i,cardIndex[self.hand[i]]] = 1
 			
-
 	def announceBidMade(self,bid, player) :
 		if bid.getSuit() is not BIDS.passbid:
 			self.announceTrumpSuit(bid.getSuit())
@@ -222,7 +224,7 @@ class ComputerPlayer(Player) :
 		self.currentBidRound += 1
 
 	def announceCardPlayed(self,card, player) :
-		self.gameState['playHistory'][0,self.currentTrick/4,
+		self.gameState['playHistory'][0,self.currentTrick//4,
 					      self.positionToIndex(player),cardIndex[card]] = 1
 		self.incrementActionCounter()
 		self.currentTrick += 1

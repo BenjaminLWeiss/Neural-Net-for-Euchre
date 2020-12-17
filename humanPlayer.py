@@ -24,7 +24,7 @@ class HumanPlayer(Player):
 
     def makeBid(self, auctionRound, upcard, dealer_position):
         
-        raw_input("Press Enter to continue...")
+        input("Press Enter to continue...")
 #        self.informUpCard(auctionRound)
         if auctionRound == 0:
             self.sortForBiddingRoundOne(self.upcard.getSuit())
@@ -45,26 +45,26 @@ class HumanPlayer(Player):
             if self.isValidBid(trialBid,self.upcard, auctionRound):
                 return trialBid
             else:
-                print 'That is not a legal choice. The only bid you may make is the suit of the up card.'
+                print('That is not a legal choice. The only bid you may make is the suit of the up card.')
                 return self.makeBid(auctionRound, upcard, dealer_position)
             
         elif option == 'Pass':
             if self.isValidBid(BIDS.passbid, self.upcard, auctionRound):
                 return BIDS.passbid
             else:
-                print self.upcard, auctionRound
-                print "You may not passout the hand"
+                print(self.upcard, auctionRound)
+                print("You may not passout the hand")
                 return self.makeBid(auctionRound, upcard, dealer_position)
 
 
     def informUpCard(self,  auctionRound):
         
         if auctionRound == 1:
-            print "The up card is"
-            print self.upcard
+            print("The up card is")
+            print(self.upcard)
         else:
-            print "The up card was"
-            print self.upcard
+            print("The up card was")
+            print(self.upcard)
         
 
     def selectTrump(self):
@@ -92,11 +92,11 @@ class HumanPlayer(Player):
         
         return BIDS((suit, Alone))
 
-    def swapUpCard(self):
+    def swapUpCard(self, upcard):
         
-        raw_input("Press Enter to continue...")
-        self.hand.append(self.upcard)
-        trump_suit = self.upcard.getSuit()
+        input("Press Enter to continue...")
+        self.hand.append(upcard)
+        trump_suit = upcard.getSuit()
         self.announceTrumpSuit(trump_suit)
         self.sortForPlay(trump_suit)
 
@@ -108,7 +108,7 @@ class HumanPlayer(Player):
 
     def playCard(self, suitLed, trick):
 
-        raw_input("Press Enter to continue...")
+        input("Press Enter to continue...")
         validCards = [c for c in self.hand if self.isValidPlay(c, suitLed)]
         title = 'Here is the trick so far %s.\n Here is your remaining hand %s\n What card would you like to play? Here are your legal options:' % (self.convertTrickToText(trick), self.convertHandToText())
         picker = Picker(validCards, title)
@@ -121,14 +121,14 @@ class HumanPlayer(Player):
         if bid.getSuit() is not BIDS.passbid:
             self.announceTrumpSuit(bid.getSuit())
             self.sortForPlay(bid.getSuit())
-            print "Player %s just bid %s" % (cardinalDirections[player], bid)
+            print("Player %s just bid %s" % (cardinalDirections[player], bid))
 
     def announceCardPlayed(self, card, player):
 
-        print "Player %s just played %s" % (cardinalDirections[player], card)
+        print("Player %s just played %s" % (cardinalDirections[player], card))
         self.playToTrick += 1
         if self.playToTrick % 4 == 0:
-            print "Next Trick:\n"
+            print("Next Trick:\n")
 
     def announceGameStart(self, hand, upcard, dealer, position):
         
@@ -137,23 +137,22 @@ class HumanPlayer(Player):
         self.dealer = dealer
         self.position = position
 
-        print "You are sitting in %s" % cardinalDirections[self.position]
-        print "The dealer is in %s" % cardinalDirections[self.dealer]
-        print "The upcard is %s" % self.upcard
-        print "Your hand is %s" % self.convertHandToText()
+        print("You are sitting in %s" % cardinalDirections[self.position])
+        print("The dealer is in %s" % cardinalDirections[self.dealer])
+        print("The upcard is %s" % self.upcard)
+        print("Your hand is %s" % self.convertHandToText())
         input = ("press any key to continue")
 
     def announceGameEnd(self, score):
 
-        print "The hand is over.\n You got %d points." % score
+        print("The hand is over.\n You got %d points." % score)
 
     def isDealer(self):
-
         return self.position % 4 == self.dealer % 4
 
     def convertHandToText(self):
-		return ", ".join(map(str,self.hand))
+        return ", ".join(map(str,self.hand))
 
     def convertTrickToText(self, trick):
-		return ", ".join(map(str,trick))
+        return ", ".join(map(str,trick))
 

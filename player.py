@@ -38,55 +38,55 @@ class Player(object) :
             card.declareTrump(suit)
 
     def sortForBiddingRoundOne(self, suit):
-		def score(card):
-		    score = card.getRank().value
-		    if card.getSuit() == suit:
-		        if card.getRank() == RANKS.jack: score += 5
-		        score += 20
-		    if card.getRank() == RANKS.jack:
-		        if suit == SUITS.spades and card.getSuit() == SUITS.clubs:
-		            score += 24
-		        elif suit == SUITS.hearts and card.getSuit() == SUITS.diamonds:
-		            score += 24
-		        elif suit == SUITS.diamonds and card.getSuit() == SUITS.hearts:
-		            score += 24
-		        elif suit == SUITS.clubs and card.getSuit() == SUITS.spades:
-		            score += 24
+        def score(card):
+            score = card.getRank().value
+            if card.getSuit() == suit:
+                if card.getRank() == RANKS.jack: score += 5
+                score += 20
+            if card.getRank() == RANKS.jack:
+                if suit == SUITS.spades and card.getSuit() == SUITS.clubs:
+                    score += 24
+                elif suit == SUITS.hearts and card.getSuit() == SUITS.diamonds:
+                    score += 24
+                elif suit == SUITS.diamonds and card.getSuit() == SUITS.hearts:
+                    score += 24
+                elif suit == SUITS.clubs and card.getSuit() == SUITS.spades:
+                    score += 24
 
-		    return score
+            return score
 
-		self.hand = sorted(self.hand,key=score)                   
+        self.hand = sorted(self.hand,key=score)
 
     def sortForBiddingRoundTwo(self, suit):
-		def score(card):
-		    score = card.getRank().value
-		    if card.getSuit() == suit:
-		        score -= 10
-		    if score == 11:
-		        score += 15
-		    return score
+        def score(card):
+            score = card.getRank().value
+            if card.getSuit() == suit:
+                score -= 10
+            if score == 11:
+                score += 15
+            return score
 
-		self.hand = sorted(self.hand,key=score)
+        self.hand = sorted(self.hand,key=score)
         
 
     def sortForPlay(self, suit):
-		def score(card):
-		    score = card.getRank().value
-		    if card.getSuit() == SUITS.trump:
-		        score += 10
+        def score(card):
+            score = card.getRank().value
+            if card.getSuit() == SUITS.trump:
+                score += 10
 		    
-		    if card.getSuit() == SUITS.spades and suit == SUITS.clubs:
-		        score -= 2
-		    elif card.getSuit() == SUITS.hearts and suit == SUITS.diamonds:
-		        score -= 2
-		    elif card.getSuit() == SUITS.diamonds and suit == SUITS.hearts:
-		        score -= 2
-		    elif card.getSuit() == SUITS.clubs and suit == SUITS.spades:
-		        score -= 2
+            if card.getSuit() == SUITS.spades and suit == SUITS.clubs:
+                score -= 2
+            elif card.getSuit() == SUITS.hearts and suit == SUITS.diamonds:
+                score -= 2
+            elif card.getSuit() == SUITS.diamonds and suit == SUITS.hearts:
+                score -= 2
+            elif card.getSuit() == SUITS.clubs and suit == SUITS.spades:
+                score -= 2
 
-		    return score
+            return score
 
-		self.hand = sorted(self.hand,key=score)
+        self.hand = sorted(self.hand,key=score)
 
     #Subclasses can override these to actually do something intelligent
     def makeBid(self, auctionRound, upcard, dealer) :
@@ -104,10 +104,10 @@ class Player(object) :
     def announceCardPlayed(self, card, player) :
         pass
  
-    def announceGameEnd(self,score) :
+    def announceGameEnd(self, score) :
         pass
  
-    def swapUpCard(self):
+    def swapUpCard(self, upcard):
         pass
 
 

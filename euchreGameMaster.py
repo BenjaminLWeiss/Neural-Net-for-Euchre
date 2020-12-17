@@ -11,7 +11,7 @@ from random import shuffle as shuf
 from enum import Enum
 from enum import IntEnum
 
-# During play, the Trump suit will be entirely replaced by Trump (in addition to the Left) 
+# During play, the trump suit will be entirely replaced by trump (in addition to the Left) 
 class SUITS(Enum) :
 	hearts = 0
 	spades = 1
@@ -73,7 +73,7 @@ class EuchreCard:
 
     def __init__(self, suit, rank):
         if suit not in SUITS :
-            print "Suit choice not valid"
+            print("Suit choice not valid")
         self.suit = suit
         if rank not in RANKS :
             print('Rank choice Not Valid: '+ rank.name)
@@ -86,7 +86,10 @@ class EuchreCard:
         return hash(self.suit) ^ hash(self.rank)
 
     def __str__(self):
-		return self.rank.name + ' of ' + self.suit.name
+        return self.rank.name + ' of ' + self.suit.name
+
+    def __repr__(self):
+        return 'EuchreCard(' + str(self.suit) + ',' + str(self.rank) + ')'
 
     def getSuit(self): #Just for simplicity in reading
         return self.suit
@@ -136,9 +139,9 @@ class GameMaster:
                 NS_score += handScore
             else:
                 EW_score -= handScore
-            print 'Current score is N/S: %r \n and E/W: %r' % (NS_score, EW_score)
+            print('Current score is N/S: %r \n and E/W: %r' % (NS_score, EW_score))
 
-        print 'North/South score = %r \n East/West score = %r' % (NS_score, EW_score)
+        print('North/South score = %r \n East/West score = %r' % (NS_score, EW_score))
         return NS_score, EW_score
 
     def oneHand(self, Dealer_Position): #This function plays one hand with the players and the given dealer. 
@@ -167,7 +170,7 @@ class GameMaster:
 
         Trick = [None, None, None, None] # Stores the 4 cards in the trick
         Suit_Led = None
-        for turn in xrange(4): # turn is for turn to play in the trick
+        for turn in range(4): # turn is for turn to play in the trick
             Player_Turn = (Trick_Leader + turn) % 4 
 
                 #To_Play.declareTrump(Bid.getSuit()) This line can be uncommented if you are worried
@@ -209,7 +212,7 @@ class GameMaster:
                     Trump_Played = True
         
         if Trump_Played:
-            for x in xrange(4):
+            for x in range(4):
                 if Trick[x] is not None:
                     if Trick[x].getSuit() == SUITS.trump:
                         if winning_index is not None:
@@ -219,7 +222,7 @@ class GameMaster:
                             winning_index = x
         else:
             winning_index = 0
-            for x in xrange(1,4):
+            for x in range(1,4):
                 if Trick[x] is not None:
                     if Trick[x].getSuit() == Trick[0].getSuit():
                         if Trick[x].getRank() > Trick[winning_index].getRank():
@@ -347,7 +350,7 @@ class GameMaster:
                     Declarer = Player_Turn
                     Bid_made = True
                     if auctionRound == 0:
-                        self.Play_Order[Dealer_Position].swapUpCard()
+                        self.Play_Order[Dealer_Position].swapUpCard(UpCard)
                 else: Player_Turn = (Player_Turn + 1) % 4
 
       #  print Bid
